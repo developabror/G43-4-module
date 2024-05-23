@@ -1,59 +1,79 @@
 package uz.app;
 
-import uz.app.entity.User;
-import uz.app.payload.Confirmation;
-import uz.app.payload.UserInfo;
-import uz.app.service.UserService;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
+import lombok.extern.java.Log;
+import lombok.val;
+import uz.app.entity.Employee;
+import uz.app.entity.Parent;
+import uz.app.entity.Student;
+import uz.app.entity.Worker;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
 
+@Log
 public class Main {
-    static Scanner scanner=new Scanner(System.in);
-    static Scanner strScanner=new Scanner(System.in);
-
-    public static void main(String[] args) {
-
-        UserService userService=new UserService();
+    static Scanner scanner = new Scanner(System.in);
+    static Scanner strScanner = new Scanner(System.in);
 
 
-        while (true){
-            System.out.println("""
-                    0 exit
-                    1 sign in
-                    2 sign up 
-                    3 confirm sms
-                    """);
-               switch (scanner.nextInt()){
-                   case 0->{
-                       return;
-                   }
-                   case 1->{
-                       System.out.println("enter email");
-                       String email = strScanner.nextLine();
-                       System.out.println("enter password");
-                       String password = strScanner.nextLine();
-                       userService.signIn(new UserInfo(email,password));
-                   }
-                   case 2->{
-                       System.out.println("enter email");
-                       String email = strScanner.nextLine();
-                       System.out.println("enter password");
-                       String password = strScanner.nextLine();
-                       userService.signUp(new UserInfo(email,password));
-                   }
-                   case 3->{
-                       System.out.println("enter email");
-                       String email = strScanner.nextLine();
-                       System.out.println("enter code");
-                       String code = strScanner.nextLine();
-                       userService.checkSmsConfirmation(new Confirmation(email,code));
-                   }
-               }
-        }
+    public static void main(String[] args)throws Exception {
+        final var temp = "Hello";
 
-//        String test = "{\"name\":\"Ali\",\"password\":\"root123\",\"address\":\"uzb\",\"gender\":\"male\"}";
-//        Gson gson =new GsonBuilder().create();
-//        User user = gson.fromJson(test,User.class);
-//        System.out.println(user);
+
+//        Properties p = new Properties();
+//
+//        FileInputStream fileInputStream = new FileInputStream("D:\\PDP\\G43\\5-modul\\maven-app\\src\\main\\resources\\application.properties");
+//        LogManager.getLogManager().readConfiguration(fileInputStream);
+//        log.warning("warning");
+//        log.log(Level.CONFIG,"message of config");
+//        File file =new File("D:\\images.jpg");
+//        Employee employee0 =new Employee("Ali","aliy@gmail.com",2_000_000.0);
+//        Employee employee1 =new Employee("Ali","aliy@gmail.com",5_000_000.0);
+//        System.out.println(employee0.equals(employee1));
+
+
+//        Parent parent = new Parent();
+//        System.out.println("hello");
+//        System.out.println(parent);
+//
+////                .builder()
+////                .name("Ali")
+////                .surname("Aliyev")
+////                .address("Navoiy")
+////                .build();
+//        Student student=
+//                Student
+//                        .quruvchi()
+//
+//                        .build();
+//        Worker worker = new Worker();
+//
+//
+//
+//
+//        student.setName("Jamshid");
+//        student.setSurname("Sobirov");
+//        student.setStudentId("1164653123");
+//        student.setUniver("MIT");
+//        student.setFaculty("Data science");
+//
+//        worker.setName("Jasur");
+//        worker.setSurname("Komilov");
+//        worker.setSalary(10_000_000.0);
+//        worker.setEmployeeType("HYBRID");
+//
+//
+//        System.out.println(parent);
+//        System.out.println(student);
+//        System.out.println(worker);
+
     }
 }
