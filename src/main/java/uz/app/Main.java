@@ -16,14 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Main {
-//    static List<String> names= null;
-//    static {
-//        Faker faker =new Faker();
-//        Name name = faker.name();
-//         names= Stream
-//                .generate(() -> name.name())
-//                .limit(200000).toList();
-//    }
+
 
     public static void main(String[] args) throws Exception {
 
