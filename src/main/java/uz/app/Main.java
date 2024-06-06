@@ -7,12 +7,8 @@ import com.google.gson.reflect.TypeToken;
 import lombok.SneakyThrows;
 import uz.app.entity.User;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -37,9 +33,10 @@ public class Main {
             System.out.println("""
                     0 exit
                     1 create user
-                    2 show users
-                    3 edit user
-                    4 delete user
+                    2 show user
+                    3 show users
+                    4 edit user
+                    5 delete user
                     """);
             switch (scanner.nextInt()) {
                 case 0 -> {
@@ -65,7 +62,24 @@ public class Main {
 
                 }
                 case 2 -> {
-                    HttpRequest build = httpRequest.GET().build();
+                    System.out.println("enter user id");
+                    String id = strScanner.nextLine();
+                    HttpRequest build = httpRequest
+
+                            .uri(new URI(url+"/"+id ))
+                            .GET()
+                            .build();
+                    HttpResponse<String> send = client.send(build, HttpResponse.BodyHandlers.ofString());
+                    if (send.body()!=null) {
+                        User user = gson.fromJson(send.body(), User.class);
+                        System.out.println(user);
+                    }
+                }
+                case 3 -> {
+                    HttpRequest build = httpRequest
+                            .uri(new URI(url ))
+                            .GET()
+                            .build();
                     HttpResponse<String> send = client.send(build, HttpResponse.BodyHandlers.ofString());
                     String body = send.body();
                     Type type = new TypeToken<ArrayList<User>>() {
@@ -75,7 +89,7 @@ public class Main {
                         System.out.println(user);
                     }
                 }
-                case 3 -> {
+                case 4 -> {
                     User user = new User();
                     System.out.println("enter id");
                     user.setId(strScanner.nextLine());
@@ -88,20 +102,21 @@ public class Main {
                     System.out.println("enter age");
                     user.setAge(scanner.nextInt());
                     HttpRequest build = httpRequest
-                            .uri(new URI(url+"/"+user.getId()))
+                            .uri(new URI(url + "/" + user.getId()))
                             .header("Content-Type", "application/json")
                             .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(user)))
                             .build();
 
                     client.send(build, HttpResponse.BodyHandlers.ofString());
                 }
-                case 4 -> {
+                case 5 -> {
                     System.out.println("enter user id");
                     String id = strScanner.nextLine();
                     HttpRequest build = httpRequest
-                            .uri(new URI(url+"/"+id))
+                            .uri(new URI(url + "/" + id))
                             .DELETE()
                             .build();
+
 
                     client.send(build, HttpResponse.BodyHandlers.ofString());
                 }
