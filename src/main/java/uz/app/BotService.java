@@ -3,12 +3,17 @@ package uz.app;
 import lombok.SneakyThrows;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.File;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +37,7 @@ public class BotService extends TelegramLongPollingBot {
 
         if (update.getMessage().hasContact()) {
             System.out.println(update.getMessage().getContact().getPhoneNumber());
-            keyboardMaker(sendMessage, info);
+            sendMessage.setReplyMarkup(keyboardMaker(info));
             sendMessage.setText("here is info");
             userState.put(chatId,1);
             execute(sendMessage);
@@ -46,43 +51,54 @@ public class BotService extends TelegramLongPollingBot {
             case "/start" -> {
                 state = 0;
                 sendMessage.setText("Assalamu alaykum. Botga xush kelibsiz");
-                keyboardMaker(sendMessage, Utils.mainMenu);
+                sendMessage.setReplyMarkup(keyboardMaker( Utils.mainMenu));
             }
             case Utils.INFO -> {
                 state = 1;
                 sendMessage.setText("here is full info");
-                keyboardMaker(sendMessage, Utils.info);
+                sendMessage.setReplyMarkup(keyboardMaker( Utils.info));
             }
             case MAIN_ASKED -> {
                 state = 2;
-                keyboardMaker(sendMessage, new String[][]{{MAIN_ASKED}, {BACK}});
+                sendMessage.setReplyMarkup(keyboardMaker( new String[][]{{MAIN_ASKED}, {BACK}}));
             }
             case FILIALS -> {
                 state = 2;
-                keyboardMaker(sendMessage, new String[][]{{FILIALS}, {BACK}});
+                sendMessage.setReplyMarkup(keyboardMaker( new String[][]{{FILIALS}, {BACK}}));
             }
             case WORKING_DAYS -> {
                 state = 2;
-                keyboardMaker(sendMessage, new String[][]{{WORKING_DAYS}, {BACK}});
+                sendMessage.setReplyMarkup(keyboardMaker( new String[][]{{WORKING_DAYS}, {BACK}}));
             }
             case PRODUCTS -> {
                 state = 2;
-                keyboardMaker(sendMessage, new String[][]{{PRODUCTS}, {BACK}});
+
+                SendPhoto sendPhoto = new SendPhoto();
+                sendPhoto.setCaption("this is image");
+                sendPhoto.setChatId(chatId);
+
+                InputStream inputStream = new FileInputStream("D:\\image.jpg");
+                InputFile inputFile = new InputFile(inputStream,"photo");
+
+                sendPhoto.setPhoto(inputFile);
+
+                sendPhoto.setReplyMarkup(keyboardMaker(new String[][]{{PRODUCTS}, {BACK}}));
+                execute(sendPhoto);
             }
             case WORKING_HOURS -> {
                 state = 2;
-                keyboardMaker(sendMessage, new String[][]{{WORKING_HOURS}, {BACK}});
+                sendMessage.setReplyMarkup(keyboardMaker( new String[][]{{WORKING_HOURS}, {BACK}}));
             }
             case BACK -> {
                 if (state == 1) {
                     state = 0;
-                    keyboardMaker(sendMessage, mainMenu);
+                    sendMessage.setReplyMarkup(keyboardMaker(mainMenu));
                 } else if (state == 2) {
                     state = 1;
-                    keyboardMaker(sendMessage, info);
+                    sendMessage.setReplyMarkup(keyboardMaker( info));
                 }
             }
-            default -> keyboardMaker(sendMessage, mainMenu);
+            default -> sendMessage.setReplyMarkup(keyboardMaker( mainMenu));
         }
         userState.put(chatId, state);
         if (sendMessage.getText() == null) {
@@ -91,12 +107,11 @@ public class BotService extends TelegramLongPollingBot {
         execute(sendMessage);
     }
 
-    private static void keyboardMaker(SendMessage sendMessage, String[][] buttons) {
+    private static ReplyKeyboardMarkup keyboardMaker( String[][] buttons) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setOneTimeKeyboard(true);
-        sendMessage.setReplyMarkup(replyKeyboardMarkup);
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         for (String[] button : buttons) {
             KeyboardRow row = new KeyboardRow();
@@ -112,6 +127,7 @@ public class BotService extends TelegramLongPollingBot {
             keyboardRows.add(row);
         }
         replyKeyboardMarkup.setKeyboard(keyboardRows);
+        return replyKeyboardMarkup;
     }
 
 
