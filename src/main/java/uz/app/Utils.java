@@ -4,8 +4,9 @@ public interface Utils {
 
     String INFO = "info";
     String SEND_NUMBER="send number";
+    String CONTACT_US="contact us";
     String[][] mainMenu = {
-            {"contact us", INFO},
+            {CONTACT_US, INFO},
             {SEND_NUMBER}
     };
 
