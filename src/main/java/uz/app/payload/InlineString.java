@@ -1,4 +1,4 @@
-package uz.app;
+package uz.app.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

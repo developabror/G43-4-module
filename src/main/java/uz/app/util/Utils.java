@@ -1,12 +1,12 @@
-package uz.app;
+package uz.app.util;
 
 public interface Utils {
 
-    String INFO = "info";
+    String SEND_FILE = "send file";
     String SEND_NUMBER="send number";
     String CONTACT_US="contact us";
     String[][] mainMenu = {
-            {CONTACT_US, INFO},
+            {CONTACT_US, SEND_FILE},
             {SEND_NUMBER}
     };
 
