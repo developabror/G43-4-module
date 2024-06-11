@@ -7,7 +7,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
-import static uz.app.util.Utils.SEND_NUMBER;
 
 public class ReplyMarkupService {
     public  ReplyKeyboardMarkup keyboardMaker(String[][] buttons) {
@@ -20,7 +19,6 @@ public class ReplyMarkupService {
             KeyboardRow row = new KeyboardRow();
             for (String s : button) {
                 KeyboardButton keyboardButton = new KeyboardButton(s);
-                keyboardButton.setRequestContact(s.equals(SEND_NUMBER));
                 row.add(keyboardButton);
             }
             keyboardRows.add(row);
