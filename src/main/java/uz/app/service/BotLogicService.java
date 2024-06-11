@@ -20,9 +20,9 @@ public class BotLogicService {
     BotService botService = BotService.getInstance();
     private final ReplyMarkupService replyService = new ReplyMarkupService();
     private final InlineMarkupService inlineService = new InlineMarkupService();
-    public static Map<Long, UserState> userState = new HashMap<>();
+    public Map<Long, UserState> userState = new HashMap<>();
     private final Long adminId = 702192115l;
-    public static Map<Long, String> adminResponse = new HashMap<>();
+    public Map<Long, String> adminResponse = new HashMap<>();
 
 
     public void messageHandler(Update update) {
